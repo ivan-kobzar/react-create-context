@@ -1,4 +1,4 @@
-This is a simple state/store utility for React based on Hooks, Context API and localStorage synchronization (optional)
+This is a simple state/store utility for React based on Hooks, Context API and localStorage synchronization (optional). Safe to use with SSR.
 ## Main Features
 
 - createContextStore based on Flux architecture (useReducer)
@@ -22,10 +22,10 @@ npm install react-create-context
 
 Example of createContextStore utility: 
 
-```js
+```ts
 import { createContextStore } from 'react-create-context';
 
-const initialState = {};
+const initialState: State = {};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -40,7 +40,7 @@ const [
   ContextStoreProvider,
   useContextStore,
   useContextStoreDispatch,
-] = createContextStore(reducer, initialState); // you can pass localeStorage key as a third argument to sync with localStorage
+] = createContextStore<State>(reducer, initialState); // you can pass localeStorage key as a third argument to sync with localStorage
 
 const contextStoreActions = {
   action: (payload) => ({ type: 'action', payload }),
@@ -57,16 +57,16 @@ export {
 
 Example of createContextState utility: 
 
-```js
+```ts
 import { createContextState } from 'react-create-context';
 
-const initialState = {};
+const initialState: State = {};
 
 const [
   ContextStateProvider,
   useContextState,
   useContextSetState
-] = createContextState(initialState); // you can pass localeStorage key as a second argument to sync with localStorage
+] = createContextState<State>(initialState); // you can pass localeStorage key as a second argument to sync with localStorage
 
 export {
   ContextStateProvider,
@@ -75,3 +75,5 @@ export {
 };
 
 ```
+
+You can find more examples in the examples folder.

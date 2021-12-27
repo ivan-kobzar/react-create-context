@@ -4,32 +4,25 @@ import React, {
   Dispatch,
   FC,
   useContext,
-  useEffect,
   useState,
 } from 'react';
+import { useLocalStorageSync } from './hooks/useLocalStorageSync';
+import { getFromLocalStorage } from './utils/getFromLocalStorage';
 
 export const createContextState = <State,>(
   initialState: State,
   key?: string
 ): [FC, () => State, () => Dispatch<SetStateAction<State>>] => {
-  const SetStateContext = reactCreateContext({});
-  const StateContext = reactCreateContext(initialState);
+  const localStorageState = getFromLocalStorage<State>(key);
+  const initialOrSavedState = localStorageState ?? initialState;
 
-  const localStorageState: string | null = key
-    ? localStorage.getItem(key)
-    : null;
-  initialState = localStorageState
-    ? JSON.parse(localStorageState)
-    : initialState;
+  const SetStateContext = reactCreateContext({});
+  const StateContext = reactCreateContext(initialOrSavedState);
 
   const StateProvider: FC = ({ children }) => {
-    const [state, setState] = useState(initialState);
+    const [state, setState] = useState(initialOrSavedState);
 
-    useEffect(() => {
-      if (key) {
-        localStorage.setItem(key, JSON.stringify(state));
-      }
-    }, [state]);
+    useLocalStorageSync(state, key);
 
     return (
       <SetStateContext.Provider value={setState}>
@@ -40,7 +33,8 @@ export const createContextState = <State,>(
 
   const useContextSetState = () =>
     useContext(SetStateContext) as Dispatch<SetStateAction<State>>;
-  const useContextState = () => useContext(StateContext);
+
+  const useContextState = () => useContext<State>(StateContext);
 
   return [StateProvider, useContextState, useContextSetState];
 };
