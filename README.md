@@ -29,7 +29,7 @@ const initialState: State = {};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'action':
+    case 'example':
       return { ...state, ...action.payload };
     default:
       return state;
@@ -43,7 +43,7 @@ const [
 ] = createContextStore<State>(reducer, initialState); // you can pass localeStorage key as a third argument to sync with localStorage
 
 const contextStoreActions = {
-  action: (payload) => ({ type: 'action', payload }),
+  example: (payload) => ({ type: 'example', payload }),
 };
 
 export {
@@ -76,4 +76,4 @@ export {
 
 ```
 
-You can find more examples in the examples folder.
+You can find more examples in this [folder](https://github.com/ivan-kobzar/react-create-context/blob/main/example/index.tsx).

@@ -1,7 +1,9 @@
-export const getFromLocalStorage = <State>(key?: string): State | null => {
-  if (!key) return null;
+import { isServer } from '../constants/isServer';
 
-  const value = window?.localStorage.getItem(key);
+export const getFromLocalStorage = <State>(key?: string): State | null => {
+  if (!key || isServer) return null;
+
+  const value = window.localStorage.getItem(key);
 
   if (value) return JSON.parse(value);
 
