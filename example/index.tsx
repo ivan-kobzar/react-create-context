@@ -20,7 +20,7 @@ const App = () => {
   return (
     <ThemeProvider>
       <ThemeToggle />
-      {/* TODO: add auth example with createContextStore*/}
+      {/* TODO: add auth example with createContextStore */}
     </ThemeProvider>
   );
 };
